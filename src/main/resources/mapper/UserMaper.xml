@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vw.zhongxing.dao.UserMapper">
-
-    <select id="login" parameterType="String" resultType="com.vw.zhongxing.model.UserDO">
-        SELECT * FROM tb_user WHERE username = #{username} AND password = #{password} AND is_valid = 1
-    </select>
-
-</mapper>
