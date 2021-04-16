@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>课程管理</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/css/weather-icons.min.css" rel="stylesheet"/>
+
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300"
+            rel="stylesheet" type="text/css">
+
+    <link href="/css/demo.min.css" rel="stylesheet"/>
+    <link href="/css/typicons.min.css" rel="stylesheet"/>
+    <link href="/css/animate.min.css" rel="stylesheet"/>
+    <link href="/css/bootstrap-table.css" rel="stylesheet"/>
+    <link href="/css/toastr.css" rel="stylesheet"/>
+
+    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap-table.js?t=4"></script>
+    <script src="/js/bootstrap-table-zh-CN.js"></script>
+    <script src="/js/toastr.js"></script>
+    <script src="/js/bootbox.min.js"></script>
+
+    <script src="/js/xlsx.mini.js"></script>
+    <script src="/js/tableExport.min.js"></script>
+    <script src="/js/bootstrap-table-export.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true, //是否显示关闭按钮
+            "positionClass": "toast-top-right", //弹出窗的位置
+            "showDuration": "300", //显示的动画时间
+            "hideDuration": "300", //消失的动画时间
+            "timeOut": "3000", //展现时间
+            "showEasing": "swing", //显示时的动画缓冲方式
+            "hideEasing": "linear", //消失时的动画缓冲方式
+            "showMethod": "fadeIn", //显示时的动画方式
+            "hideMethod": "fadeOut" //消失时的动画方式
+        };
+        var rowData = 0;
+        /**
+         * 点击变色
+         */
+        $(document).on('click', 'tr', function () {
+            $(this).addClass('selected').siblings().removeClass('selected');
+        });
+        /**
+         * 表格初始化方法
+         * @returns {Object}
+         * @constructor
+         */
+        var TableInit = function () {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $('#mytable').bootstrapTable({
+                    url: '/user/listUser',
+                    method: 'post',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    toolbar: '.toolbar',                //工具按钮用哪个容器
+                    toolbarAlign: 'left',
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sortable: true,                     //是否启用排序
+                    sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber: 1,                       //初始化加载第一页，默认第一页
+                    pageSize: 8,                       //每页的记录行数（*）
+                    pageList: [8, 15, 20, 25],        //可供选择的每页的行数（*）
+                    search: true,                       //是否显示表格搜索
+                    showColumns: true,                  //是否显示所有的列
+                    minimumCountColumns: 2,             //最少允许的列数
+                    //height: 800,
+                    singleSelect: true, 				//单行选中，一次只能选择一行
+                    clickToSelect: true,
+                    sortName: 'totalLearn',
+                    sortOrder: 'desc',
+
+                    onClickCell: function (index, value, row) {
+                        rowData = row;
+                    },
+                    showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
+                    queryParams: function (params) { //查询字段，每次选择下拉菜单的时候，重新刷新表格就行
+                        return {
+                            status: $("#sel_status").val(),
+                        }
+                    },
+                    showExport : true,
+                    Icons : 'glyphicon-export icon-share',
+                    exportDataType : 'all',
+                    exportTypes :['xlsx'],
+                    exportOptions : {
+                        fileName: '众行用户学习数据',
+                        worksheetName: '众行用户学习数据'
+                    },
+                        columns: [
+                        {
+                            title: '序号',
+                            align: 'center',
+                            formatter: function (value, row, index) {
+                                return index + 1;
+                            }
+                        },{
+                            field: 'status',
+                            title: '认证状态',
+                            sortable: true,
+                            align: "center",
+                            formatter : function(value, row, index) {
+                                if (value == 1) {
+                                    return '已认证';
+                                } else {
+                                    return '未认证';
+                                }
+                            },
+                        },{
+                            field: 'employeeCode',
+                            title: '工号',
+                            sortable: true,
+                            align: "center"
+                        }, {
+                            field: 'employeeName',
+                            title: '姓名',
+                            sortable: true,
+                            align: "center"
+                        },{
+                            field: 'description',
+                            title: '所属企业',
+                            sortable: true,
+                            align: "center",
+                        },{
+                            field: 'userId',
+                            title: '用户ID',
+                            sortable: true,
+                            align: "center",
+                        }, {
+                            field: 'nickname',
+                            title: '昵称',
+                            sortable: true,
+                            align: "center",
+                        }, {
+                            field: 'totalLearn',
+                            title: '累计学时',
+                            sortable: true,
+                            align: "center",
+                            formatter : function(value, row, index) {
+                                return Math.ceil(value/60000);
+                            },
+                        }, {
+                            field: 'weekLearn',
+                            title: '本周学时',
+                            sortable: true,
+                            align: "center",
+                                formatter : function(value, row, index) {
+                                    return Math.ceil(value/60000);
+                                },
+                        }, {
+                            field: 'totalFinish',
+                            title: '已完成课程数',
+                            sortable: true,
+                            align: "center"
+                        }, {
+                            field: 'itFinish',
+                            title: '已完成IT课程数',
+                            sortable: true,
+                            align: "center"
+                        }, {
+                            field: 'studyPlan',
+                            title: '学习计划进度',
+                            sortable: true,
+                            align: "center",
+                            formatter : function(value, row, index) {
+                                var result = "";
+                                if (value == null){
+                                    result = "-"
+                                }else {
+                                    $.each(value, function (key, value1) {
+                                        result += key + ':' + value1 + '<br/>';
+                                    });
+                                }
+                                return result;
+                            },
+                            }],
+                })
+            };
+
+            return oTableInit;
+        }
+
+        /**
+         * 表格重加载方法
+         */
+        function reload(){
+            $("#mytable").bootstrapTable('refresh');
+            rowData = 0;
+        }
+
+    </script>
+</head>
+<body>
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-body">
+
+                <div class="toolbar">
+                    <H5 style="float:left;margin-right: 5px">认证状态:</H5>
+                    <select class="form-control" style="width:180px;float:left;margin-right: 5px" id="sel_status" onchange="reload()">
+                        <option value = "0">全部</option>
+                        <option value = "1">已认证</option>
+                        <option value = "2">未认证</option>
+                    </select>
+                </div>
+                <table class="table " id="mytable">
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var oTable = new TableInit();
+    oTable.Init();
+
+    function print(){
+        var printData = $('.bootstrap-table').parent().html();
+        window.document.body.innerHTML = printData;
+        // 开始打印
+        window.print();
+        window.location.reload(true);
+    }
+</script>
+</body>
+</html>

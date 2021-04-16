@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>众行后台管理系统</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/css/weather-icons.min.css" rel="stylesheet"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300"
+          rel="stylesheet" type="text/css">
+
+    <link id="beyond-link" href="/css/beyond.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/demo.min.css" rel="stylesheet"/>
+    <link href="/css/typicons.min.css" rel="stylesheet"/>
+    <link href="/css/animate.min.css" rel="stylesheet"/>
+
+    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <script src="/js/beyond.min.js"></script>
+    <script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js?t=1"></script>
+    <script>
+
+            // L2Dwidget.init({
+            //     "model": {
+            //         jsonPath: "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+            //         "scale": 1
+            //     },
+            //     "display": {
+            //         "position": "left", //看板娘的表现位置
+            //         "width": 100,  //小萝莉的宽度
+            //         "height": 200, //小萝莉的高度
+            //         "hOffset": 0,//小萝莉的X偏移量
+            //         "vOffset": -20//小萝莉的Y偏移量
+            //     },
+            //     "mobile": {
+            //         "show": true,
+            //         "scale": 0.5
+            //     },
+            //     "react": {
+            //         "opacityDefault": 0.3,//小萝莉的透明度
+            //         "opacityOnHover": 0.2
+            //     }
+            // });
+    </script>
+
+</head>
+<body>
+<div class="navbar">
+    <div class="navbar-inner" style="background:#07b8f0">
+        <div class="navbar-container">
+            <div class="navbar-header pull-left">
+                <a href="#" class="navbar-brand">
+                        <img src="/img/zhongxing.jpg" style="width: 50px; height: 40px;margin-left: 10px"/>
+                </a>
+                <span style="margin-left: 10px;font-size: 30px;font-weight: bolder;color: white;">众行后台管理系统</span>
+            </div>
+            <div class="navbar-header pull-right">
+                <div class="navbar-account">
+                    <ul class="account-area">
+                        <li>
+                            <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                                <div class="avatar">
+                                    <img src="/img/admin.png"/>
+                                </div>
+                                <section>
+                                    <h2><span class="profile"><span id="staffName" style="font-weight: bolder;font-size: 18px">管理员</span></span></h2>
+                                </section>
+                            </a>
+                            <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
+
+                                <li class="dropdown-footer">
+                                    <a href="/staff/logout">
+                                        退出登录
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container container-fluid">
+    <div class="page-container">
+        <div class="page-sidebar" id="sidebar">
+            <div class="sidebar-header-wrapper">
+                <input type="text" class="searchinput"/>
+                <i class="searchicon fa fa-search"></i>
+                <div class="searchhelper">Search Reports, Charts, Emails or Notifications</div>
+            </div>
+            <ul class="nav sidebar-menu">
+                <li class="">
+                    <a href="/showDataCenter" class="menu-dropdown" target="myiframe" onclick="setTitle1(this)">
+                        <i class="menu-icon fa fa-home"></i>
+                        <span class="menu-text"> 数据中心 </span>
+                        <i class="menu-expand"></i>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="#" class="menu-dropdown" onclick="toggle(this)">
+                        <i class="menu-icon fa fa-desktop"></i>
+                        <span class="menu-text"> 课程管理 </span>
+                        <i class="menu-expand"></i>
+                    </a>
+
+                    <ul class="submenu">
+                        <li>
+                            <a href="/showStructure" target="myiframe" onclick="setTitle(this)">
+                                <span class="menu-text">分类标签管理</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/showCourse" target="myiframe" onclick="setTitle(this)">
+                                <span class="menu-text">课程管理</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="/showStudyPlan" class="menu-dropdown" target="myiframe" onclick="setTitle1(this)">
+                        <i class="menu-icon fa fa-table"></i>
+                        <span class="menu-text"> 学习计划管理 </span>
+                        <i class="menu-expand"></i>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/showFeedback" class="menu-dropdown" target="myiframe" onclick="setTitle1(this)">
+                        <i class="menu-icon fa fa-facebook"></i>
+                        <span class="menu-text"> 反馈信息管理 </span>
+                        <i class="menu-expand"></i>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/showEmployeeManage" class="menu-dropdown" target="myiframe" onclick="setTitle1(this)">
+                        <i class="menu-icon fa fa-user"></i>
+                        <span class="menu-text"> 企业用户管理 </span>
+                        <i class="menu-expand"></i>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/showUser" class="menu-dropdown" target="myiframe"  onclick="setTitle1(this)">
+                        <i class="menu-icon fa fa-bar-chart-o"></i>
+                        <span class="menu-text"> 用户学习数据 </span>
+                        <i class="menu-expand"></i>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="#" class="menu-dropdown" onclick="toggle(this)">
+                        <i class="menu-icon fa fa-picture-o"></i>
+                        <span class="menu-text"> 基础数据管理 </span>
+                        <i class="menu-expand"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="/showBanner" target="myiframe" onclick="setTitle(this)">
+                                <span class="menu-text">首页轮播图</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/showFlowerPic" target="myiframe" onclick="setTitle(this)">
+                                <span class="menu-text">小红花底图</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/showFlowerWord" target="myiframe" onclick="setTitle(this)">
+                                <span class="menu-text">小红花文案</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="page-content">
+
+            <div class="page-header position-relative">
+                <div class="header-title">
+                    <h1 id="header-title">
+                    </h1>
+                </div>
+                <div class="header-buttons">
+
+                    <a class="refresh" id="refresh-toggler" href="">
+                        <i class="glyphicon glyphicon-refresh"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="page-body">
+                <iframe name="myiframe" frameborder="0" scrolling="yes" marginheight="0" marginwidth="0" allowtransparency="yes"
+                        src="/showDataCenter" onLoad="changeFrameHeight(this)" width="99%" height="99%"></iframe>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    var staffName = getMyCookie("staffName");
+    $("#staffName").text(staffName);
+
+    function getMyCookie(key){
+        var val = "";
+        // 对cookie操作
+        var cookies = document.cookie;
+        cookies = cookies.trim();
+        var cookie_array = cookies.split(";");
+        for(i=0;i<cookie_array.length;i++){
+            var cookie = cookie_array[i];
+            var array = cookie.split("=");
+            if(array[0].trim() == key){
+                val = array[1];
+            }
+        }
+        return val;
+    }
+
+
+    function toggle(li) {
+        $(li).parent().toggleClass("open");
+        $(li).parent().siblings().removeClass("open");
+    }
+
+    function setTitle(a) {
+        var title1 = $($(a).parent().parent().prev().children()[1]).text();
+        var title = $(a).children().last().text();
+        $("#header-title").text(title1 + ">" + title);
+    }
+
+    function setTitle1(a) {
+        var title = $(a).children().first().next().text();
+        $("#header-title").text(title);
+    }
+
+    function changeFrameHeight(that){
+        $(that).height(document.documentElement.clientHeight - 120);
+    }
+
+</script>
+</body>
+</html>

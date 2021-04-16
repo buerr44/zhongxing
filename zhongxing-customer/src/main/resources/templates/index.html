@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <!--Basic Styles-->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet" />
+    <link href="/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/css/toastr.css" rel="stylesheet" />
+
+    <!--Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300" rel="stylesheet" type="text/css">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="/css/beyond.min.css?t=4" rel="stylesheet" />
+    <link href="/css/demo.min.css" rel="stylesheet" />
+    <link href="/css/animate.min.css" rel="stylesheet" />
+    <link id="skin-link" href="" rel="stylesheet" type="text/css" />
+
+
+    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/toastr.js"></script>
+    <script type="text/javascript">
+        if (window != top){
+            //那么就将最外层窗体的的地址赋给当前窗体
+            top.location.href = window.location.href;
+        }
+        toastr.options = {
+            "closeButton": true, //是否显示关闭按钮
+            "positionClass": "toast-top-center", //弹出窗的位置
+            "showDuration": "300", //显示的动画时间
+            "hideDuration": "300", //消失的动画时间
+            "timeOut": "3000", //展现时间
+            "showEasing": "swing", //显示时的动画缓冲方式
+            "hideEasing": "linear", //消失时的动画缓冲方式
+            "showMethod": "fadeIn", //显示时的动画方式
+            "hideMethod": "fadeOut" //消失时的动画方式
+        };
+        function login(){
+            var staffName = $('#staffName').val();
+            var password = $('#password').val();
+            if(staffName == "" || password == ""){
+                toastr.warning("用户名密码不能为空");
+            }else{
+                $.ajax({
+                    type : "post",
+                    url : "/staff/login",
+                    data:{
+                        staffName: staffName,
+                        password: password,
+                    },
+                    success : function(d) {
+                        if (d == "0") {
+                            window.location.href="/showMain";
+                        }else if(d == "1") {
+                            toastr.warning("系统开小差啦,请联系管理员");
+                        }else{
+                            toastr.warning(d);
+                        }
+                    },
+                    error : function() {
+                        toastr.warning("网络繁忙,请稍后再试");
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container" style="background-image: url(/img/bg.jpg);height:100%;width:100%" >
+    <div class="login-container animated fadeInDown">
+        <div class="loginbox bg-white" >
+            <div class="loginbox-title">众行后台管理登录</div>
+            <div class="loginbox-or">
+                <div class="or-line"></div>
+            </div>
+            <div class="loginbox-textbox">
+                <input type="text" class="form-control" id="staffName" placeholder="用户名" />
+            </div>
+            <div class="loginbox-textbox">
+                <input type="password" class="form-control" id="password" placeholder="密码" />
+            </div>
+            <div class="loginbox-submit">
+                <input type="button" class="btn btn-primary btn-block" onclick="login()" value="登录">
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

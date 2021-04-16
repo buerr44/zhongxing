@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据中心</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/css/weather-icons.min.css" rel="stylesheet"/>
+
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300"
+            rel="stylesheet" type="text/css">
+
+    <link href="/css/demo.min.css" rel="stylesheet"/>
+    <link href="/css/typicons.min.css" rel="stylesheet"/>
+    <link href="/css/animate.min.css" rel="stylesheet"/>
+    <link href="/css/bootstrap-editable.css" rel="stylesheet"/>
+    <link href="/css/bootstrap-table.css" rel="stylesheet"/>
+    <link href="/css/toastr.css" rel="stylesheet"/>
+    <link href="/css/fileinput.min.css" rel="stylesheet"/>
+
+    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap-editable.min.js"></script>
+    <script src="/js/bootstrap-table.js?t=4"></script>
+    <script src="/js/bootstrap-table-zh-CN.js"></script>
+    <script src="/js/bootstrap-table-editable.js"></script>
+    <script src="/js/toastr.js"></script>
+    <script src="/js/bootbox.min.js"></script>
+    <script src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/fileinput.min.js"></script>
+    <script src="/js/fileinput_local_zh.js"></script>
+    <style>
+        .panel-heading{font-size: 20px;font-weight: bolder}
+        img {
+            width:100%;
+        }
+
+    </style>
+    <script>
+        toastr.options = {
+            "closeButton": true, //是否显示关闭按钮
+            "positionClass": "toast-top-right", //弹出窗的位置
+            "showDuration": "300", //显示的动画时间
+            "hideDuration": "300", //消失的动画时间
+            "timeOut": "3000", //展现时间
+            "showEasing": "swing", //显示时的动画缓冲方式
+            "hideEasing": "linear", //消失时的动画缓冲方式
+            "showMethod": "fadeIn", //显示时的动画方式
+            "hideMethod": "fadeOut" //消失时的动画方式
+        };
+        var FileInputInit = function (){
+            var oFileInputInit = new Object();
+            oFileInputInit.Init = function(){
+                $("#txt_pic").fileinput({
+                    language: 'zh', //设置语言
+                    allowedFileExtensions: ['jpg', 'png', 'bmp', 'jpeg'],//接收的文件后缀
+                    showPreview: true,              //展前预览
+                    showUpload: false,
+                    autoReplace: true,
+                    maxFileSize: 1024,//上传文件最大的尺寸
+                    maxFilesCount: 1,//
+                    dropZoneEnabled: true,//是否显示拖拽区域
+                    browseClass: "btn btn-primary", //按钮样式
+                    previewSettings: {image: {width: "200px", height: "100px"},},
+                    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+                })
+            };
+            return oFileInputInit;
+        }
+
+    </script>
+</head>
+<body>
+<div style="width: 95%;margin: 20px auto;">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    轮播图1
+                </div>
+                <div class="panel-body">
+                    <img src="" id="img1"/>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button id="upload1" class="btn btn-info" style="width:80%;margin-left:10%" value="1" onclick="openUploadWin(this.value)">上传</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-danger" style="width:80%;margin-left:10%" value="1" onclick="confirmDelete(this.value)">删除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    轮播图2
+                </div>
+                <div class="panel-body">
+                    <img src="" id="img2"/>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button id="upload2" class="btn btn-info" style="width:80%;margin-left:10%" value="2" onclick="openUploadWin(this.value)">上传</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-danger" style="width:80%;margin-left:10%" value="2" onclick="confirmDelete(this.value)">删除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    轮播图3
+                </div>
+                <div class="panel-body">
+                    <img src="" id="img3"/>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button id="upload3" class="btn btn-info" style="width:80%;margin-left:10%" value="3" onclick="openUploadWin(this.value)">上传</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-danger" style="width:80%;margin-left:10%" value="3" onclick="confirmDelete(this.value)">删除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    轮播图4
+                </div>
+                <div class="panel-body">
+                    <img src="" id="img4"/>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button id="upload4" class="btn btn-info" style="width:80%;margin-left:10%" value="4" onclick="openUploadWin(this.value)">上传</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-danger" style="width:80%;margin-left:10%" value="4" onclick="confirmDelete(this.value)">删除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    轮播图5
+                </div>
+                <div class="panel-body">
+                    <img src="" id="img5"/>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button id="upload5" class="btn btn-info" style="width:80%;margin-left:10%" value="5" onclick="openUploadWin(this.value)">上传</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-danger" style="width:80%;margin-left:10%" value="5" onclick="confirmDelete(this.value)">删除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    轮播图6
+                </div>
+                <div class="panel-body">
+                    <img src="" id="img6"/>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button id="upload6" class="btn btn-info" style="width:80%;margin-left:10%" value="6" onclick="openUploadWin(this.value)">上传</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-danger" style="width:80%;margin-left:10%" value="6" onclick="confirmDelete(this.value)">删除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="txt_form" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel">上传轮播图</h4>
+                </div>
+                <div class="modal-body" style="float: left">
+                    <div class="form-group" style="width:570px;float:left" hidden>
+                        <label for="txt_bannerId">轮播图id</label>
+                        <input type="number" name="bannerId" class="form-control" id="txt_bannerId">
+                    </div>
+                    <div class="form-group" style="width:570px;float:left">
+                        <label for="txt_bannerName">名称</label>
+                        <input type="text"  class="form-control" id="txt_bannerName" disabled>
+                    </div>
+                    <div class="form-group" id="pic_container" style="width:570px;float:left">
+                        <label for="txt_pic">轮播图上传</label>
+                        <input type="file" name="file" class="form-control" id="txt_pic" placeholder="请选择图片">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn_submit" onclick="uploadBanner()"><span
+                            class="glyphicon glyphicon-refresh" aria-hidden="true"></span>上传
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    var oFileInput = new FileInputInit();
+    oFileInput.Init();
+
+    var filePath = "https://www.feggle.cn:8443/fileweb";
+    // var filePath = "http://localhost:9002/";
+
+    $.ajax({
+        url:"banner/listBanner",
+        method:"post",
+        dataType:"json",
+        success:function(d){
+            d.forEach(function (value){
+                $("#img"+value.bannerId).attr("src",filePath+value.pic);
+                $("#upload"+value.bannerId).text("替换");
+            });
+        },
+        error:function(){
+            toastr.warning("网络繁忙,请稍后再试")
+        }
+    })
+
+    function openUploadWin(bannerId){
+        $("#txt_bannerId").val(bannerId);
+        $("#txt_bannerName").val("轮播图"+bannerId);
+        $("#txt_pic").val("");
+        $(".fileinput-remove-button").click();
+        $('#myModal').modal();
+    }
+
+    function uploadBanner(){
+        if ($("#txt_pic").val() == null || $("#txt_pic").val().trim() == "") {
+            toastr.warning("请上传轮播图");
+        } else {
+            $("#btn_submit").prop("disabled",true);
+            $.ajax({
+                url: "banner/upload",
+                data: new FormData($("#txt_form")[0]),
+                type: "POST",
+                // 告诉jQuery不要去处理发送的数据，用于对data参数进行序列化处理 这里必须false
+                processData: false,
+                // 告诉jQuery不要去设置Content-Type请求头
+                contentType: false,
+                success: function (d) {
+                    $("#btn_submit").prop("disabled",false);
+                    console.log(d);
+                    if (d == 1) {
+                        toastr.warning("系统开小差啦,请联系管理员");
+                    } else {
+                        var id = $("#txt_bannerId").val();
+                        $("#img"+id).attr("src",filePath+d);
+                        $("#upload"+id).text("替换")
+                        $('#myModal').modal('hide');
+                        toastr.success("轮播上传成功");
+                    }
+                },
+                error: function (json) {
+                    toastr.warning("网络繁忙,请稍后再试");
+                }
+            });
+        }
+    }
+
+    function confirmDelete(bannerId){
+        if($("#img"+bannerId).attr("src") == null || $("#img"+bannerId).attr("src").trim() == "" ){
+            toastr.warning("轮播图为空,无需删除");
+        }else {
+            bootbox.confirm({
+                size: "small",
+                message: "确认删除轮播图吗?",
+                buttons: {
+                    confirm: {
+                        label: '确定',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: '取消',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) { /* result is a boolean; true = OK, false = Cancel*/
+                    if (result) {
+                        deleteBanner(bannerId);
+                    } else {
+                    }
+                }
+            });
+        }
+    }
+
+    function deleteBanner(bannerId){
+        $.ajax({
+            url:"banner/delete",
+            method:"post",
+            data:{
+                bannerId:bannerId,
+            },
+            dataType:"json",
+            success:function(d){
+                if (d == 0) {
+                    $("#img"+bannerId).attr("src","");
+                    $("#upload"+bannerId).text("上传")
+                    toastr.success("轮播图删除成功");
+                } else {
+                    toastr.warning("系统开小差啦,请联系管理员");
+                }
+            },
+            error:function(){
+                toastr.warning("网络繁忙,请稍后再试")
+            }
+        })
+    }
+</script>
+</body>
+</html>

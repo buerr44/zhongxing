@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>课程管理</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/css/weather-icons.min.css" rel="stylesheet"/>
+
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300"
+            rel="stylesheet" type="text/css">
+
+    <link href="/css/demo.min.css" rel="stylesheet"/>
+    <link href="/css/typicons.min.css" rel="stylesheet"/>
+    <link href="/css/animate.min.css" rel="stylesheet"/>
+    <link href="/css/bootstrap-editable.css" rel="stylesheet"/>
+    <link href="/css/bootstrap-table.css" rel="stylesheet"/>
+    <link href="/css/toastr.css" rel="stylesheet"/>
+    <link href="/css/fileinput.min.css" rel="stylesheet"/>
+
+    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap-editable.min.js"></script>
+    <script src="/js/bootstrap-table.js?t=4"></script>
+    <script src="/js/bootstrap-table-zh-CN.js"></script>
+    <script src="/js/bootstrap-table-editable.js"></script>
+    <script src="/js/toastr.js"></script>
+    <script src="/js/bootbox.min.js"></script>
+    <script src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/fileinput.min.js"></script>
+    <script src="/js/fileinput_local_zh.js"></script>
+    <style>
+        td {
+            border-top: 1px solid transparent !important;
+            border-left: 1px solid transparent !important;
+            border-right: 1px solid transparent !important;
+        }
+
+        th {
+            border-top: 1px solid transparent !important;
+            border-left: 1px solid transparent !important;
+            border-right: 1px solid transparent !important;
+        }
+    </style>
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true, //是否显示关闭按钮
+            "positionClass": "toast-top-right", //弹出窗的位置
+            "showDuration": "300", //显示的动画时间
+            "hideDuration": "300", //消失的动画时间
+            "timeOut": "3000", //展现时间
+            "showEasing": "swing", //显示时的动画缓冲方式
+            "hideEasing": "linear", //消失时的动画缓冲方式
+            "showMethod": "fadeIn", //显示时的动画方式
+            "hideMethod": "fadeOut" //消失时的动画方式
+        };
+        var rowDataA = -1;
+        var rowDataB = -1;
+        var rowDataC = -1;
+        /**
+         * 点击变色
+         */
+        $(document).on('click', 'tr', function () {
+            $(this).addClass('selected').siblings().removeClass('selected');
+        });
+        /**
+         * 文件上传初始化
+         */
+        var FileInputInit = function (){
+            var oFileInputInit = new Object();
+            oFileInputInit.Init = function(){
+                $("#txt_pic1").fileinput({
+                    language: 'zh', //设置语言
+                    allowedFileExtensions: ['jpg', 'png', 'bmp', 'jpeg'],//接收的文件后缀
+                    showPreview: false,              //展前预览
+                    showUpload: false,
+                    autoReplace: true,
+                    maxFileSize: 1024,//上传文件最大的尺寸
+                    maxFilesCount: 1,//
+                    dropZoneEnabled: true,//是否显示拖拽区域
+                    browseClass: "btn btn-primary", //按钮样式
+                    previewSettings: {image: {width: "100px", height: "100px"},},
+                    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+                })
+                $("#txt_pic2").fileinput({
+                    language: 'zh', //设置语言
+                    allowedFileExtensions: ['jpg', 'png', 'bmp', 'jpeg'],//接收的文件后缀
+                    showPreview: false,              //展前预览
+                    showUpload: false,
+                    autoReplace: true,
+                    maxFileSize: 1024,//上传文件最大的尺寸
+                    maxFilesCount: 1,//
+                    dropZoneEnabled: true,//是否显示拖拽区域
+                    browseClass: "btn btn-primary", //按钮样式
+                    previewSettings: {image: {width: "100px", height: "100px"},},
+                    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+                })
+            };
+            return oFileInputInit;
+        }
+
+        /**
+         * 表格初始化方法
+         * @returns {Object}
+         * @constructor
+         */
+        var TableAInit = function () {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $('#mytableA').bootstrapTable({
+                    url: '/studyPlan/listStudyPlan',
+                    method: 'post',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber: 1,                       //初始化加载第一页，默认第一页
+                    pageSize: 10,                       //每页的记录行数（*）
+                    pageList: [10, 15, 20, 25],        //可供选择的每页的行数（*）
+                    sortable: true,                     //是否启用排序
+                    minimumCountColumns: 2,             //最少允许的列数
+                    //height: 800,
+                    singleSelect: true, 				//单行选中，一次只能选择一行
+                    clickToSelect: true,
+                    onClickCell: function (index, value, row) {
+                        rowDataA = row;
+                        reloadCourse();
+                    },
+                    columns: [
+                       [
+                           {
+                               "title": "学习计划清单",
+                               "halign":"center",
+                               "align":"center",
+                               "colspan": 10
+                           }
+                       ],[
+                           {
+                            title: '序号',
+                            align: 'center',
+                            formatter: function (value, row, index) {
+                                return index + 1;
+                            }
+                        }, {
+                            field: 'studyPlanId',
+                            sortable: true,
+                            title: '计划id',
+                            align: "center",
+                            visible: false,
+                        }, {
+                            field: 'studyPlanName',
+                            sortable: true,
+                            title: '学习计划名称',
+                            align: "center",
+                            width: 300,
+                        }, {
+                            field: 'courseCount',
+                            sortable: true,
+                            title: '节数',
+                            align: "center",
+                        }, {
+                            field: 'learnerCount',
+                            sortable: true,
+                            align: "center",
+                            title: '开启人数',
+                        },  {
+                            field: 'createDate',
+                            sortable: true,
+                            align: "center",
+                            title: '创建时间',
+                        },{
+                            field: 'planType',
+                            sortable: true,
+                            align: "center",
+                            title: '计划类别',
+                            visible: false,
+                        },{
+                            field: 'planTask',
+                            sortable: true,
+                            align: "center",
+                            title: '分类标签',
+                            visible: false,
+                        },{
+                            field: 'description',
+                            sortable: true,
+                            align: "center",
+                            title: '课程介绍',
+                            visible: false,
+                        },{
+                            field: 'operate',
+                                title: '操作',
+                            align: 'center',
+                            valign: 'middle',
+                            width: 200,
+                            events: {
+                                'click #edit': function (e, value, row, index) {
+                                    $("#myModalLabel").text("学习计划编辑");
+                                    $("#txt_studyPlanId").val(row.studyPlanId);
+                                    $("#txt_studyPlanName").val(row.studyPlanName);
+                                    $("#txt_pic1").val("");
+                                    $("#txt_pic2").val("");
+                                    $(".fileinput-remove-button").click();
+                                    $("#txt_planType").val(row.planType);
+                                    $("#txt_planTask").val(row.planTask);
+                                    $("#txt_description").val(row.description);
+                                    $("#btn_submit").attr("onclick", "editStudyPlan()");
+                                    $('#myModal').modal();
+                                },
+                                'click #delete': function (e, value, row, index) {
+                                    confirmDeletePlan(row.studyPlanId);
+                                }
+                            },
+                            formatter: function (value, row, index) {
+                                var result = "";
+                                result += '<button id="edit" class="btn btn-info" data-toggle="modal" data-target="#editModal" style="margin-left:10px;">编辑</button>';
+                                result += '<button id="delete" class="btn btn-danger" style="margin-left:10px;">删除</button>';
+                                return result;
+                            }
+                        }
+                        ]
+                    ],
+
+                })
+            };
+            return oTableInit;
+        }
+        var TableBInit = function () {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $('#mytableB').bootstrapTable({
+                    url: '/studyPlan/listPlanCourse',
+                    method: 'post',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: false,                   //是否显示分页（*）
+                    sortable: true,                     //是否启用排序
+                    minimumCountColumns: 2,             //最少允许的列数
+                    //height: 800,
+                    singleSelect: true, 				//单行选中，一次只能选择一行
+                    clickToSelect: true,
+                    sortName: 'sequence',
+                    sortOrder: 'asc',
+                    onClickCell: function (index, value, row) {
+                        rowDataB = row;
+
+                    },
+                    queryParams: function (params) { //查询字段，每次选择下拉菜单的时候，重新刷新表格就行
+                        return {
+                            studyPlanId: rowDataA == -1 ? 0 : rowDataA.studyPlanId,
+                        }
+                    },
+                    columns: [
+                        [
+                            {
+                                "title": "计划内课程清单",
+                                "halign":"center",
+                                "align":"center",
+                                "colspan": 5
+                            }
+                        ],[
+                            {
+                            field: 'sequence',
+                            title: '课程排序',
+                            align: 'center',
+                            sortable: true,
+                            editable: {
+                                type: 'text',
+                                title: '课程排序',
+                            }
+                        }, {
+                            field: 'planCourseId',
+                            sortable: true,
+                            align: "center",
+                            visible: false,
+                        }, {
+                            field: 'courseName',
+                            sortable: true,
+                            title: '课程名称',
+                            align: "center",
+                            width: 300,
+                        }, {
+                            field: 'courseCode',
+                            sortable: true,
+                            title: '课程编码',
+                            align: "center",
+                        }, {
+                            field: 'operate',
+                                title: '操作',
+                            align: 'center',
+                            valign: 'middle',
+                            events: {
+                                'click #low_delete': function (e, value, row, index) {
+                                    confirmDeleteCourse(row.planCourseId,row.sequence);
+                                }
+                            },
+                            formatter: function (value, row, index) {
+                                var result = "";
+                                result += '<button id="low_delete" class="btn btn-danger" style="margin-left:10px;">删除</button>';
+                                return result;
+                            }
+                        }]
+                        ],
+                    onEditableSave: function (field, row, oldValue, $el) {
+                        $.ajax({
+                            type: "post",
+                            url: "/studyPlan/editSequence",
+                            data:{
+                                planCourseId:row.planCourseId,
+                                studyPlanId:rowDataA.studyPlanId,
+                                sequence:row.sequence,
+                            },
+                            dataType: 'JSON',
+                            success: function (d) {
+                                if (d == 0) {
+                                    reloadCourse();
+                                    toastr.success("顺序修改成功");
+                                } else {
+                                    toastr.warning("系统开小差啦,请联系管理员");
+                                }
+                            },
+                            error: function () {
+                                toastr.warning("网络繁忙,请稍后再试");
+                            },
+                        });
+                    }
+                })
+            };
+            return oTableInit;
+        }
+        var TableCInit = function () {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $('#mytableC').bootstrapTable({
+                    url: '/course/list',
+                    method: 'post',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    toolbar: '#toolbar2',                //工具按钮用哪个容器
+                    toolbarAlign: 'left',
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sortable: true,                     //是否启用排序
+                    sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber: 1,                       //初始化加载第一页，默认第一页
+                    pageSize: 8,                       //每页的记录行数（*）
+                    pageList: [8, 15, 20, 25],        //可供选择的每页的行数（*）
+                    search: true,                       //是否显示表格搜索
+                    showColumns: false,                  //是否显示所有的列
+                    minimumCountColumns: 2,             //最少允许的列数
+                    //height: 800,
+                    singleSelect: true, 				//单行选中，一次只能选择一行
+                    clickToSelect: true,
+                    sortName: 'structureId',
+                    sortOrder: 'asc',
+
+                    onClickCell: function (index, value, row) {
+                        rowDataC = row;
+                    },
+                    showToggle: false,                    //是否显示详细视图和列表视图的切换按钮
+                    queryParams: function (params) { //查询字段，每次选择下拉菜单的时候，重新刷新表格就行
+                        return {
+                            structureId: $("#sel_lowStructure").val(),
+                        }
+                    },
+                    columns: [
+                        {
+                            field: 'sequence',
+                            title: '课程排序',
+                            sortable: true,
+                            align: "center",
+                        }, {
+                            field: 'courseId',
+                            title: '课程id',
+                            sortable: true,
+                            align: "center",
+                            visible: false,
+                        },{
+                            field: 'courseCode',
+                            title: '课程编码',
+                            sortable: true,
+                            align: "center"
+                        }, {
+                            field: 'courseName',
+                            title: '课程名称',
+                            sortable: true,
+                            align: "center",
+                            width: 200,
+                        }, {
+                            field: 'structureName',
+                            title: '课程类别',
+                            sortable: true,
+                            align: "center"
+                        }],
+                })
+            };
+
+            return oTableInit;
+        }
+        /**
+         * 表格重加载方法
+         */
+        function reloadPlan() {
+            $("#mytableA").bootstrapTable('refresh');
+            rowDataA = -1;
+            reloadCourse();
+        }
+
+        function reloadCourse() {
+            $("#mytableB").bootstrapTable('refresh');
+            rowDataB = -1;
+        }
+        function reloadC() {
+            $("#mytableC").bootstrapTable('refresh');
+            rowDataC = -1;
+        }
+
+    </script>
+</head>
+<body>
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-body">
+
+                <div class="toolbar col-xs-12">
+                    <button class="btn  btn-primary" onclick="openUploadWin()" title="添加分类"><i
+                            class="glyphicon glyphicon-plus"></i>添加学习计划
+                    </button>
+                    <button class="btn  btn-primary" onclick="openUploadWin2()" title="添加课程" style="float: right"><i
+                            class="glyphicon glyphicon-plus"></i>添加计划内课程
+                    </button>
+                </div>
+                <div class="col-xs-7">
+                    <table class="table " id="mytableA">
+
+                    </table>
+                </div>
+                <div class="col-xs-5">
+                    <table class="table" id="mytableB">
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="txt_form" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel">添加学习计划</h4>
+                </div>
+                <div class="modal-body" style="float: left">
+                    <div class="form-group" hidden>
+                        <label for="txt_studyPlanId">学习计划id</label>
+                        <input type="number" name="studyPlanId" class="form-control" id="txt_studyPlanId"
+                               placeholder="学习计划id">
+                    </div>
+                    <div class="form-group" style="width:570px;float:left">
+                        <label for="txt_studyPlanName">学习计划名称</label>
+                        <input type="text" name="studyPlanName" class="form-control" id="txt_studyPlanName"
+                               placeholder="学习计划名称">
+                    </div>
+                    <div class="form-group" id="pic_container" style="width:570px;float:left">
+                        <label for="txt_pic1">封面图片(计划中心)</label>
+                        <input type="file" name="file1" class="form-control" id="txt_pic1" placeholder="请选择图片">
+                    </div>
+                    <div class="form-group" id="pic_container2" style="width:570px;float:right">
+                        <label for="txt_pic2">封面图片(首页)</label>
+                        <input type="file" name="file2" class="form-control" id="txt_pic2" placeholder="请选择图片">
+                    </div>
+                    <div class="form-group typeB" style="width:250px;float:left">
+                        <label for="txt_planType">计划类别</label>
+                        <select class="form-control" name="planType" id="txt_planType">
+                            <option value="0">公开计划</option>
+                            <option value="1">企业专享</option>
+                        </select>
+                    </div>
+                    <div class="form-group typeB" style="width:250px;float:right">
+                        <label for="txt_planTask">分类标签</label>
+                        <input type="text" name="planTask" class="form-control" id="txt_planTask" placeholder="分类标签">
+                    </div>
+                    <div class="form-group typeB" style="width:570px;float:left">
+                        <label for="txt_description">计划介绍</label>
+                        <input type="text" name="description" class="form-control" id="txt_description" placeholder="计划介绍">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn_submit"><span
+                            class="glyphicon glyphicon-refresh" aria-hidden="true"></span>保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">添加计划内课程</h4>
+                </div>
+                <div class="modal-body" style="float: left">
+                    <div class="form-group" hidden>
+                        <label for="txt2_planCourseId">计划课程id</label>
+                        <input type="number" class="form-control" id="txt2_planCourseId"
+                               placeholder="计划课程id">
+                    </div>
+                    <div class="form-group" style="width:250px;float:left">
+                        <label for="txt2_planName">学习计划</label>
+                        <input type="txt" class="form-control" id="txt2_planName" disabled>
+                    </div>
+                    <div class="form-group" style="width:250px;float:right">
+                        <label for="txt2_sequence">课程排序</label>
+                        <input type="number" class="form-control" id="txt2_sequence"
+                               placeholder="课程排序">
+                    </div>
+                    <div class="form-group" style="width:570px;float:left">
+                        <label for="txt2_course">课程选择</label>
+                        <div id="txt2_course">
+
+                            <div id="toolbar2">
+                                <select class="form-control" style="width:100px;float:left;margin-right: 5px" id="sel_highStructure" onchange="changeMidStructure()">
+                                    <option value = "0">选择大类</option>
+                                    <option value = "1">IT编程</option>
+                                    <option value = "2">产品经理</option>
+                                </select>
+                                <select class="form-control" style="width:100px;float:left;margin-right: 5px" id="sel_midStructure" onchange="changeLowStructure()">
+                                    <option value = "0">选择中类</option>
+                                </select>
+                                <select class="form-control" style="width:100px;float:left;margin-right: 5px" id="sel_lowStructure" onchange="reloadC()">
+                                    <option value = "0">选择小类</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="width:570px;float:left">
+                                <table class="table" id="mytableC">
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn_submit2" onclick="addCourse()"><span
+                            class="glyphicon glyphicon-refresh" aria-hidden="true"></span>保存
+                    </button>
+                </div>
+        </div>
+    </div>
+</div>
+<script>
+    var oFileInput = new FileInputInit();
+    oFileInput.Init();
+
+    var oTableA = new TableAInit();
+    oTableA.Init();
+
+    var oTableB = new TableBInit();
+    oTableB.Init();
+
+    /**
+     * 打开添加窗口
+     */
+    function openUploadWin() {
+        $("#txt_studyPlanId").val("");
+        $("#txt_studyPlanName").val("");
+        $("#txt_pic1").val("");
+        $("#txt_pic2").val("");
+        $(".fileinput-remove-button").click();
+        $("#txt_planType").val(0);
+        $("#txt_planTask").val("");
+        $("#txt_description").val("");
+        $("#btn_submit").attr("onclick", "uploadStudyPlan()");
+        $('#myModal').modal();
+    }
+
+    /**
+     * 打开添加课程窗口
+     */
+    function openUploadWin2() {
+        if (rowDataA == -1) {
+            toastr.warning("请选择学习计划");
+        } else {
+            $("#txt2_planCourseId").val("");
+            $("#txt2_sequence").val("");
+            $("#txt2_planName").val(rowDataA.studyPlanName);
+            var oTableC = new TableCInit();
+            oTableC.Init();
+            $('#myModal2').modal();
+        }
+    }
+
+    /**
+     * 计划添加
+     */
+    function uploadStudyPlan() {
+        if ($("#txt_studyPlanName").val() == null || $("#txt_studyPlanName").val().trim() == "") {
+            toastr.warning("计划名称不能为空");
+        } else if ($("#txt_pic1").val() == null || $("#txt_pic1").val().trim() == "") {
+            toastr.warning("请上传封面图片(计划中心)");
+        } else if ($("#txt_pic2").val() == null || $("#txt_pic2").val().trim() == "")  {
+            toastr.warning("请上传图片(首页");
+        } else {
+            $("#btn_submit").prop("disabled",true);
+            $.ajax({
+                url: "studyPlan/upload",
+                data: new FormData($("#txt_form")[0]),
+                type: "POST",
+                // 告诉jQuery不要去处理发送的数据，用于对data参数进行序列化处理 这里必须false
+                processData: false,
+                // 告诉jQuery不要去设置Content-Type请求头
+                contentType: false,
+                dataType: "json",
+                success: function (d) {
+                    $("#btn_submit").prop("disabled",false);
+                    if (d == 0) {
+                        reloadPlan();
+                        $('#myModal').modal('hide');
+                        toastr.success("学习计划添加成功");
+                    } else {
+                        toastr.warning("系统开小差啦,请联系管理员");
+                    }
+                },
+                error: function (json) {
+                    toastr.warning("网络繁忙,请稍后再试");
+                }
+            });
+        }
+    }
+
+
+    /**
+     * 编辑计划
+     */
+    function editStudyPlan() {
+        if ($("#txt_studyPlanName").val() == null || $("#txt_studyPlanName").val().trim() == "") {
+            toastr.warning("计划名称不能为空");
+        } else {
+            $.ajax({
+                url: "studyPlan/edit",
+                data: new FormData($("#txt_form")[0]),
+                type: "POST",
+                // 告诉jQuery不要去处理发送的数据，用于对data参数进行序列化处理 这里必须false
+                processData: false,
+                // 告诉jQuery不要去设置Content-Type请求头
+                contentType: false,
+                dataType: "json",
+                success: function (d) {
+                    if (d == 0) {
+                        reloadPlan();
+                        $('#myModal').modal('hide');
+                        toastr.success("计划修改成功");
+                    } else {
+                        toastr.warning("系统开小差啦,请联系管理员");
+                    }
+                },
+                error: function (json) {
+                    toastr.warning("网络繁忙,请稍后再试");
+                }
+            });
+        }
+    }
+
+    /**
+     * 删除计划弹窗
+     */
+    function confirmDeletePlan(studyPlanId){
+        bootbox.confirm({
+            size: "small",
+            message: "确认删除计划吗?",
+            buttons: {
+                confirm: {
+                    label: '确定',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '取消',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) { /* result is a boolean; true = OK, false = Cancel*/
+                if (result) {
+                    deletePlan(studyPlanId);
+                } else {
+                }
+            }
+        });
+    }
+    /**
+     * 删除计划
+     */
+    function deletePlan(studyPlanId) {
+        $.ajax({
+            url:"studyPlan/deletePlan",
+            method:"post",
+            data:{
+                studyPlanId:studyPlanId,
+            },
+            dataType:"json",
+            success:function(d){
+                if (d == 0) {
+                    reloadPlan();
+                    toastr.success("计划删除成功");
+                } else {
+                    toastr.warning("系统开小差啦,请联系管理员");
+                }
+            },
+            error:function(){
+                toastr.warning("网络繁忙,请稍后再试")
+            }
+        })
+    }
+
+    /**
+     * 删除课程弹窗
+     */
+    function confirmDeleteCourse(planCourseId,sequence){
+        bootbox.confirm({
+            size: "small",
+            message: "确认从计划中删除课程吗?",
+            buttons: {
+                confirm: {
+                    label: '确定',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '取消',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) { /* result is a boolean; true = OK, false = Cancel*/
+                if (result) {
+                    deleteCourse(planCourseId,sequence);
+                } else {
+                }
+            }
+        });
+    }
+    /**
+     * 删除课程
+     */
+    function deleteCourse(planCourseId,sequence) {
+        $.ajax({
+            url:"studyPlan/deleteCourse",
+            method:"post",
+            data:{
+                planCourseId:planCourseId,
+                sequence:sequence,
+                studyPlanId:rowDataA.studyPlanId,
+            },
+            dataType:"json",
+            success:function(d){
+                if (d == 0) {
+                    reloadCourse();
+                    toastr.success("课程删除成功");
+                } else {
+                    toastr.warning("系统开小差啦,请联系管理员");
+                }
+            },
+            error:function(){
+                toastr.warning("网络繁忙,请稍后再试")
+            }
+        })
+    }
+
+    /**
+     * 大类变更刷新中类及小类下拉框内容
+     */
+    function changeMidStructure(){
+        var pid = $("#sel_highStructure").val();
+        if(pid == "0"){
+            $("#sel_midStructure").empty();
+            $("#sel_midStructure").append('<option value = "0">选择中类</option>');
+            changeLowStructure();
+        }else{
+            $.ajax({
+                url:"structure/listByPid",
+                method:"post",
+                data:{
+                    pid: pid,
+                },
+                dataType:"json",
+                success:function (d){
+                    $("#sel_midStructure").empty();
+                    if(d != null && d != ""){
+                        $(d).each(function(k,v){
+                            $("#sel_midStructure").append('<option value = "' + v.structureId + '">' + v.structureName + '</option>');
+                        })
+                    }else{
+                        $("#sel_midStructure").append('<option value = "-1">无中类数据</option>');
+                    }
+                    changeLowStructure();
+                },
+                error : function() {
+                    toastr.warning("网络繁忙,请稍后再试");
+                }
+            })
+        }
+    }
+
+    /**
+     * 中类变更刷新小类下拉框内容
+     */
+    function changeLowStructure(){
+        var pid = $("#sel_midStructure").val();
+        if(pid == "0"){
+            $("#sel_lowStructure").empty();
+            $("#sel_lowStructure").append('<option value = "0">选择小类</option>');
+            reloadC();
+        }else if(pid == "-1"){
+            $("#sel_lowStructure").empty();
+            $("#sel_lowStructure").append('<option value = "-1">无小类数据</option>');
+            reloadC();
+        }else{
+            $.ajax({
+                url:"structure/listByPid",
+                method:"post",
+                data:{
+                    pid: pid,
+                },
+                dataType:"json",
+                success:function (d){
+                    $("#sel_lowStructure").empty();
+                    if(d != null && d != ""){
+                        $(d).each(function(k,v){
+                            $("#sel_lowStructure").append('<option value = "' + v.structureId + '">' + v.structureName + '</option>');
+                        })
+                    }else{
+                        $("#sel_lowStructure").append('<option value = "-1">无小类数据</option>');
+                    }
+                    reloadC();
+                },
+                error : function() {
+                    toastr.warning("网络繁忙,请稍后再试");
+                },
+            })
+        }
+    }
+
+    function addCourse(){
+        if ($("#txt2_sequence").val() == null || $("#txt2_sequence").val().trim() == "") {
+            toastr.warning("课程排序不能为空");
+        } else if (rowDataC == -1) {
+            toastr.warning("请选择课程");
+        } else {
+            $("#btn_submit2").prop("disabled",true);
+                        console.log(rowDataC.courseId);
+            $.ajax({
+                url: "studyPlan/addCourse",
+                method:"post",
+                data: {
+                    sequence:$("#txt2_sequence").val(),
+                    studyPlanId:rowDataA.studyPlanId,
+                    courseId:rowDataC.courseId,
+                },
+                dataType: "json",
+                success: function (d) {
+                    $("#btn_submit2").prop("disabled",false);
+                    if (d == 0) {
+                        var tmp = rowDataA;
+                        reloadPlan();
+                        rowDataA = tmp;
+                        reloadCourse();
+                        $('#myModal2').modal('hide');
+                        toastr.success("课程添加成功");
+                    } else if(d == 2) {
+                        toastr.warning("该计划内已存在该课程,请重新选择");
+                    } else {
+                        toastr.warning("系统开小差啦,请联系管理员");
+                    }
+                },
+                error: function (json) {
+                    toastr.warning("网络繁忙,请稍后再试");
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据中心</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/bootstrap-table.css" rel="stylesheet"/>
+    <link href="/css/toastr.css" rel="stylesheet"/>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap-table.js?t=4"></script>
+    <script src="/js/bootstrap-table-zh-CN.js"></script>
+    <script src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/echarts.min.js"></script>
+    <script src="/js/toastr.js"></script>
+    <style>
+        .panel-heading{font-size: 20px;font-weight: bolder}
+        td {
+            border-top: 1px solid transparent !important;
+            border-left: 1px solid transparent !important;
+            border-right: 1px solid transparent !important;
+        }
+
+        th {
+            border-top: 1px solid transparent !important;
+            border-left: 1px solid transparent !important;
+            border-right: 1px solid transparent !important;
+            background-color: #dfdfdf;
+            font-size: 16px;
+        }
+    </style>
+    <script>
+        toastr.options = {
+            "closeButton": true, //是否显示关闭按钮
+            "positionClass": "toast-top-right", //弹出窗的位置
+            "showDuration": "300", //显示的动画时间
+            "hideDuration": "300", //消失的动画时间
+            "timeOut": "3000", //展现时间
+            "showEasing": "swing", //显示时的动画缓冲方式
+            "hideEasing": "linear", //消失时的动画缓冲方式
+            "showMethod": "fadeIn", //显示时的动画方式
+            "hideMethod": "fadeOut" //消失时的动画方式
+        };
+        /**
+         * 表格初始化方法
+         * @returns {Object}
+         * @constructor
+         */
+        var TableAInit = function () {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $('#mytableA').bootstrapTable({
+                    url: '/course/topCourse',
+                    method: 'post',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: false,                   //是否显示分页（*）
+                    sortable: true,                     //是否启用排序
+                    minimumCountColumns: 2,             //最少允许的列数
+                    singleSelect: true, 				//单行选中，一次只能选择一行
+                    clickToSelect: true,
+                    sortName: 'playNum',
+                    sortOrder: 'desc',
+                    columns: [
+                        {
+                            title: '排名',
+                            align: 'center',
+                            formatter: function (value, row, index) {
+                                return index + 1;
+                            }
+                        }, {
+                            field: 'courseName',
+                            title: '课程名称',
+                            sortable: true,
+                            align: "center",
+                            width: 300,
+                        }, {
+                            field: 'playNum',
+                            title: '累计播放量',
+                            sortable: true,
+                            align: "center"
+                        }],
+                })
+            };
+            return oTableInit;
+        }
+        var TableBInit = function () {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $('#mytableB').bootstrapTable({
+                    url: '/course/topTeacher',
+                    method: 'post',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: false,                   //是否显示分页（*）
+                    sortable: true,                     //是否启用排序
+                    minimumCountColumns: 2,             //最少允许的列数
+                    singleSelect: true, 				//单行选中，一次只能选择一行
+                    clickToSelect: true,
+                    sortName: 'playNum',
+                    sortOrder: 'desc',
+                    columns: [
+                        {
+                            title: '排名',
+                            align: 'center',
+                            formatter: function (value, row, index) {
+                                return index + 1;
+                            }
+                        }, {
+                            field: 'teacher',
+                            title: '讲师',
+                            sortable: true,
+                            align: "center",
+                            width: 300,
+                        }, {
+                            field: 'playNum',
+                            title: '累计播放量',
+                            sortable: true,
+                            align: "center"
+                        }],
+                })
+            };
+            return oTableInit;
+        }
+    </script>
+</head>
+<body>
+<div style="width: 95%;margin: 20px auto;">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    今日访客数
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <span style="font-size: 20px" id="todayVisit">访客数值</span>
+                            <div class="row" style="margin-top: 10px;font-size: 18px">
+                                <div class="col-md-4"><span>较昨日:</span></div>
+                                <div class="col-md-4"><span id="yesterdayVisit">比例值</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3"><img src="/img/visit.png" height="60px" width="60px"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    新增用户数
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <span style="font-size: 20px" id="todayUser">用户数值</span>
+                            <div class="row" style="margin-top: 10px;font-size: 18px">
+                                <div class="col-md-4"><span>较昨日:</span></div>
+                                <div class="col-md-4"><span id="yesterdayUser">比例值</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3"><img src="/img/user.png" height="60px" width="60px"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    今日播放量
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <span style="font-size: 20px" id="todayPlay">播放量数值</span>
+                            <div class="row" style="margin-top: 10px;font-size: 18px">
+                                <div class="col-md-4"><span>较昨日:</span></div>
+                                <div class="col-md-4"><span id="yesterdayPlay">比例值</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3"><img src="/img/play.png" height="60px" width="60px"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    访问量
+                    <div class="toolbar" style="float:right" >
+                        <H5 style="margin-right: 5px;float:left">横坐标维度:</H5>
+                        <select class="form-control" style="width:80px;margin-right: 15px;float:left" id="sel_status">
+                            <option value = "1">小时</option>
+                            <option value = "2">天</option>
+                        </select>
+                        <H5 style="margin-right: 5px;float:left">时间跨度:</H5>
+                        <input type="text" class="form-control" id="startDate" placeholder="请选择开始日期" style="width: 120px;float:left;margin-right: 5px;" />
+                        <H5 style="margin-right: 5px;float:left">-</H5>
+                        <input type="text" class="form-control" id="endDate" placeholder="请选择结束日期" style="width: 120px;float:left;margin-right: 15px;" />
+                        <button class="btn btn-default" onclick="getChartData()" style="float: left"><i class="glyphicon glyphicon-search"></i>查询</button>
+                    </div>
+
+
+                </div>
+                <div class="panel-body">
+                    <div id="chart" style="width: 100%;height:400px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6 col-md-6 col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    课程TOP5
+                </div>
+                <div class="panel-body">
+                    <table class="table" id="mytableA"></table>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-md-6 col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    讲师TOP5
+                </div>
+                <div class="panel-body">
+                    <table class="table" id="mytableB"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var oTableA = new TableAInit();
+    oTableA.Init();
+
+    var oTableB = new TableBInit();
+    oTableB.Init();
+    /**
+     * 图标初始化
+     */
+    var myChart = echarts.init(document.getElementById('chart'));
+    myChart.setOption({
+        tooltip: {},
+        legend: {
+            data:['PV','UV']
+        },
+        xAxis: {
+            type: 'category',
+            data: []
+        },
+        yAxis: {},
+        series: [{
+            name: 'PV',
+            type: 'line',
+            data: []
+        },{
+            name: 'UV',
+            type: 'line',
+            data: []
+        }]
+    });
+
+    $("#startDate").datetimepicker({
+        format: 'yyyy-mm-dd',//显示格式
+        startView:2,
+        minView:2,
+        maxView :2,
+        autoclose: 1,//选择后自动关闭
+        clearBtn:true,//清除按钮
+        todayHighlight: 1,
+    });
+
+    $("#endDate").datetimepicker({
+        format: 'yyyy-mm-dd',//显示格式
+        startView:2,
+        minView:2,
+        maxView :2,
+        autoclose: 1,//选择后自动关闭
+        clearBtn:true,//清除按钮
+        todayHighlight: 1,
+    });
+
+    var d = new Date();
+
+    var month = d.getMonth()+1;
+    var day = d.getDate();
+
+    var output = d.getFullYear() + '-' +
+        (month<10 ? '0' : '') + month + '-' +
+        (day<10 ? '0' : '') + day;
+    $("#startDate").val(output);
+    $("#endDate").val(output);
+
+    /**
+     * 加载用户访问数据
+     */
+    $.ajax({
+        url:"user/getUserData",
+        method:"post",
+        dataType:"json",
+        success:function(d){
+            $("#todayVisit").text(d[0]);
+            if(d[1] == 0){
+                $("#yesterdayVisit").text("∞");
+            }else if(d[0] >= d[1]){
+                var data = (d[0] - d[1])/d[1] * 100;
+                $("#yesterdayVisit").text("+" + data.toFixed(0) + "%");
+            }else{
+                var data = (d[1] - d[0])/d[1] * 100;
+                $("#yesterdayVisit").text("-" + data.toFixed(0) + "%");
+            }
+            $("#todayUser").text(d[2]);
+            if(d[3] == 0){
+                $("#yesterdayUser").text("∞");
+            }else if(d[2] >= d[3]){
+                var data = (d[2] - d[3])/d[3] * 100;
+                $("#yesterdayUser").text("+" + data.toFixed(0) + "%");
+            }else{
+                var data = (d[3] - d[2])/d[3] * 100;
+                $("#yesterdayUser").text("-" + data.toFixed(0) + "%");
+            }
+            $("#todayPlay").text(d[4]);
+            if(d[5] == 0){
+                $("#yesterdayPlay").text("∞");
+            }else if(d[4] >= d[5]){
+                var data = (d[4] - d[5])/d[5] * 100;
+                $("#yesterdayPlay").text("+" + data.toFixed(0) + "%");
+            }else{
+                var data = (d[5] - d[4])/d[5] * 100;
+                $("#yesterdayPlay").text("-" + data.toFixed(0) + "%");
+            }
+        },
+        error:function(){
+            toastr.warning("网络繁忙,请稍后再试")
+        }
+    })
+
+    /**
+     * 加载图表数据
+     */
+    function getChartData(){
+        if($("#startDate").val() > $("#endDate").val()){
+            toastr.warning("起始日期不能晚于截止日期");
+        }else {
+            $.ajax({
+                url: "user/getChartData",
+                method: "post",
+                data: {
+                    status: $("#sel_status").val(),
+                    startDate: $("#startDate").val(),
+                    endDate: $("#endDate").val(),
+                },
+                dataType: "json",
+                success: function (d) {
+                    myChart.setOption({
+                        xAxis: {
+                            type: 'category',
+                            data: d.xRay
+                        },
+                        series: [{
+                            name: 'PV',
+                            type: 'line',
+                            smooth: true,
+                            data: d.pv
+                        }, {
+                            name: 'UV',
+                            type: 'line',
+                            smooth: true,
+                            data: d.uv
+                        }]
+                    })
+                },
+                error: function () {
+                    toastr.warning("网络繁忙,请稍后再试")
+                }
+            })
+        }
+    }
+
+    getChartData();
+</script>
+</body>
+</html>

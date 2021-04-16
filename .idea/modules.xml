@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/common-api/common-api.iml" filepath="$PROJECT_DIR$/common-api/common-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zhongxing-customer/zhongxing-customer.iml" filepath="$PROJECT_DIR$/zhongxing-customer/zhongxing-customer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zhongxing-provider/zhongxing-provider.iml" filepath="$PROJECT_DIR$/zhongxing-provider/zhongxing-provider.iml" />
+    </modules>
+  </component>
+</project>
