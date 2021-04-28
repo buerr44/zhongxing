@@ -1,12 +1,14 @@
 package com.fawvw.cloud.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.fawvw.cloud.common.api.BannerApi;
 import com.fawvw.cloud.common.api.dto.BannerDTO;
 import com.fawvw.cloud.common.api.dto.FlowerPicDTO;
 import com.fawvw.cloud.common.api.result.ApiResult;
 import com.fawvw.cloud.entity.Banner;
 import com.fawvw.cloud.entity.FlowerPic;
+import com.fawvw.cloud.entity.Popup;
 import com.fawvw.cloud.mapper.BannerMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +76,26 @@ public class BannerServiceImpl implements BannerApi {
 
         try {
             bannerMapper.deleteById(bannerId);
+            apiResult = ApiResult.success();
+        } catch (Exception e){
+            log.error(e.getMessage());
+            apiResult = ApiResult.error("B0300",e.getMessage());
+        }
+
+        return apiResult;
+    }
+
+    @Override
+    public ApiResult<String> uploadlink(Long bannerId, String link, Long lastUpdateBy) {
+        ApiResult<String> apiResult;
+
+        UpdateWrapper<Banner> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("link",link);
+        updateWrapper.set("last_update_by",lastUpdateBy);
+        updateWrapper.set("last_update_date",new Date());
+        updateWrapper.eq("maquee_id",bannerId);
+        try {
+            bannerMapper.update(null,updateWrapper);
             apiResult = ApiResult.success();
         } catch (Exception e){
             log.error(e.getMessage());

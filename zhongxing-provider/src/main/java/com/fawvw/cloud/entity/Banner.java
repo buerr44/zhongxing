@@ -16,4 +16,5 @@ public class Banner extends BaseEntity {
     private Long bannerId;
     private String pic;
     private Integer sequence;
+    private String link;
 }

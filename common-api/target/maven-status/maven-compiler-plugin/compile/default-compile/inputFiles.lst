@@ -4,10 +4,12 @@ D:\Code\fawvw\zhongxing\common-api\src\main\java\com\fawvw\cloud\common\api\Cour
 D:\Code\fawvw\zhongxing\common-api\src\main\java\com\fawvw\cloud\common\api\dto\StudyPlanDTO.java
 D:\Code\fawvw\zhongxing\common-api\src\main\java\com\fawvw\cloud\common\api\dto\BannerDTO.java
 D:\Code\fawvw\zhongxing\common-api\src\main\java\com\fawvw\cloud\common\api\StaffApi.java
+D:\Code\fawvw\zhongxing\common-api\src\main\java\com\fawvw\cloud\common\api\dto\PopupDTO.java
 D:\Code\fawvw\zhongxing\common-api\src\main\java\com\fawvw\cloud\common\api\UserApi.java
 D:\Code\fawvw\zhongxing\common-api\src\main\java\com\fawvw\cloud\common\api\dto\PlanCourseDTO.java
 D:\Code\fawvw\zhongxing\common-api\src\main\java\com\fawvw\cloud\common\api\StructureApi.java
 D:\Code\fawvw\zhongxing\common-api\src\main\java\com\fawvw\cloud\common\api\BannerApi.java
+D:\Code\fawvw\zhongxing\common-api\src\main\java\com\fawvw\cloud\common\api\PopupApi.java
 D:\Code\fawvw\zhongxing\common-api\src\main\java\com\fawvw\cloud\common\api\result\ApiResult.java
 D:\Code\fawvw\zhongxing\common-api\src\main\java\com\fawvw\cloud\common\api\dto\FeedbackDTO.java
 D:\Code\fawvw\zhongxing\common-api\src\main\java\com\fawvw\cloud\common\api\dto\StructureDTO.java

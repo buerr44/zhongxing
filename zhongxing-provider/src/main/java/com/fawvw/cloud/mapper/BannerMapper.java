@@ -13,6 +13,6 @@ import java.util.List;
  * @create 2021-03-31 19:00
  **/
 public interface BannerMapper extends BaseMapper<Banner> {
-    @Select("select maquee_id as banner_id,pic from tb_maquee")
+    @Select("select maquee_id as banner_id,pic,link from tb_maquee")
     List<BannerDTO> listBanner();
 }

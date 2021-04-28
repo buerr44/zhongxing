@@ -1,5 +1,6 @@
 com\fawvw\cloud\common\api\dto\BannerDTO.class
 com\fawvw\cloud\common\api\EmployeeApi.class
+com\fawvw\cloud\common\api\PopupApi.class
 com\fawvw\cloud\common\api\dto\FeedbackDTO.class
 com\fawvw\cloud\common\api\result\ApiResult.class
 com\fawvw\cloud\common\api\StudyPlanApi.class
@@ -7,6 +8,7 @@ com\fawvw\cloud\common\api\dto\UserDTO.class
 com\fawvw\cloud\common\api\BannerApi.class
 com\fawvw\cloud\common\api\dto\FlowerPicDTO.class
 com\fawvw\cloud\common\api\FeedbackApi.class
+com\fawvw\cloud\common\api\dto\PopupDTO.class
 com\fawvw\cloud\common\api\dto\StructureDTO.class
 com\fawvw\cloud\common\api\dto\BaseDTO.class
 com\fawvw\cloud\common\api\FlowerApi.class

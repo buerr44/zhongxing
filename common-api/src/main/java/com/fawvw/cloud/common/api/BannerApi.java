@@ -29,4 +29,13 @@ public interface BannerApi {
      * @return
      */
     ApiResult<String> delete(Long bannerId);
+
+    /**
+     * 更新链接
+     * @param bannerId
+     * @param link
+     * @param lastUpdateBy
+     * @return
+     */
+    ApiResult<String> uploadlink(Long bannerId, String link, Long lastUpdateBy);
 }

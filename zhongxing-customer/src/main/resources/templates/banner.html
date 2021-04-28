@@ -82,13 +82,17 @@
                 </div>
                 <div class="panel-body">
                     <img src="" id="img1"/>
+                    <span id="link1" hidden></span>
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <button id="changeLink1" class="btn btn-default" style="width:80%;margin-left:10%" value="1" onclick="openLinkWin(this.value)">链接</button>
+                        </div>
+                        <div class="col-md-4">
                             <button id="upload1" class="btn btn-info" style="width:80%;margin-left:10%" value="1" onclick="openUploadWin(this.value)">上传</button>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <button class="btn btn-danger" style="width:80%;margin-left:10%" value="1" onclick="confirmDelete(this.value)">删除</button>
                         </div>
                     </div>
@@ -102,13 +106,17 @@
                 </div>
                 <div class="panel-body">
                     <img src="" id="img2"/>
+                    <span id="link2" hidden></span>
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <button id="changeLink2" class="btn btn-default" style="width:80%;margin-left:10%" value="2" onclick="openLinkWin(this.value)">链接</button>
+                        </div>
+                        <div class="col-md-4">
                             <button id="upload2" class="btn btn-info" style="width:80%;margin-left:10%" value="2" onclick="openUploadWin(this.value)">上传</button>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <button class="btn btn-danger" style="width:80%;margin-left:10%" value="2" onclick="confirmDelete(this.value)">删除</button>
                         </div>
                     </div>
@@ -122,13 +130,17 @@
                 </div>
                 <div class="panel-body">
                     <img src="" id="img3"/>
+                    <span id="link3" hidden></span>
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <button id="changeLink3" class="btn btn-default" style="width:80%;margin-left:10%" value="3" onclick="openLinkWin(this.value)">链接</button>
+                        </div>
+                        <div class="col-md-4">
                             <button id="upload3" class="btn btn-info" style="width:80%;margin-left:10%" value="3" onclick="openUploadWin(this.value)">上传</button>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <button class="btn btn-danger" style="width:80%;margin-left:10%" value="3" onclick="confirmDelete(this.value)">删除</button>
                         </div>
                     </div>
@@ -144,13 +156,17 @@
                 </div>
                 <div class="panel-body">
                     <img src="" id="img4"/>
+                    <span id="link4" hidden></span>
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <button id="changeLink4" class="btn btn-default" style="width:80%;margin-left:10%" value="4" onclick="openLinkWin(this.value)">链接</button>
+                        </div>
+                        <div class="col-md-4">
                             <button id="upload4" class="btn btn-info" style="width:80%;margin-left:10%" value="4" onclick="openUploadWin(this.value)">上传</button>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <button class="btn btn-danger" style="width:80%;margin-left:10%" value="4" onclick="confirmDelete(this.value)">删除</button>
                         </div>
                     </div>
@@ -164,13 +180,17 @@
                 </div>
                 <div class="panel-body">
                     <img src="" id="img5"/>
+                    <span id="link5" hidden></span>
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <button id="changeLink5" class="btn btn-default" style="width:80%;margin-left:10%" value="5" onclick="openLinkWin(this.value)">链接</button>
+                        </div>
+                        <div class="col-md-4">
                             <button id="upload5" class="btn btn-info" style="width:80%;margin-left:10%" value="5" onclick="openUploadWin(this.value)">上传</button>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <button class="btn btn-danger" style="width:80%;margin-left:10%" value="5" onclick="confirmDelete(this.value)">删除</button>
                         </div>
                     </div>
@@ -184,13 +204,17 @@
                 </div>
                 <div class="panel-body">
                     <img src="" id="img6"/>
+                    <span id="link6" hidden></span>
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <button id="changeLink6" class="btn btn-default" style="width:80%;margin-left:10%" value="6" onclick="openLinkWin(this.value)">链接</button>
+                        </div>
+                        <div class="col-md-4">
                             <button id="upload6" class="btn btn-info" style="width:80%;margin-left:10%" value="6" onclick="openUploadWin(this.value)">上传</button>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <button class="btn btn-danger" style="width:80%;margin-left:10%" value="6" onclick="confirmDelete(this.value)">删除</button>
                         </div>
                     </div>
@@ -235,12 +259,41 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">更改链接</h4>
+                </div>
+                <div class="modal-body" style="float: left">
+                    <div class="form-group" style="width:570px;float:left" hidden>
+                        <label for="txt2_bannerId">轮播图id</label>
+                        <input type="number" class="form-control" id="txt2_bannerId">
+                    </div>
+                    <div class="form-group" style="width:570px;float:left">
+                        <label for="txt_link">超链接</label>
+                        <input type="text"  class="form-control" id="txt_link" >
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn_submit2" onclick="uploadLink()"><span
+                            class="glyphicon glyphicon-refresh" aria-hidden="true"></span>上传
+                    </button>
+                </div>
+        </div>
+    </div>
+</div>
 <script>
     var oFileInput = new FileInputInit();
     oFileInput.Init();
 
     var filePath = "https://www.feggle.cn:8443/fileweb";
-    // var filePath = "http://localhost:9002/";
+    //var filePath = "http://localhost:9002/";
 
     $.ajax({
         url:"banner/listBanner",
@@ -249,6 +302,7 @@
         success:function(d){
             d.forEach(function (value){
                 $("#img"+value.bannerId).attr("src",filePath+value.pic);
+                $("#link"+value.bannerId).text(value.link);
                 $("#upload"+value.bannerId).text("替换");
             });
         },
@@ -265,6 +319,42 @@
         $('#myModal').modal();
     }
 
+    function openLinkWin(bannerId){
+        $("#txt2_bannerId").val(bannerId);
+        $("#txt_link").val($("#link"+bannerId).text());
+        $('#myModal2').modal();
+    }
+
+    function uploadLink(){
+        if ($("#txt_link").val() == null || $("#txt_link").val().trim() == "") {
+            toastr.warning("请填写超链接");
+        } else {
+            $("#btn_submit2").prop("disabled",true);
+            $.ajax({
+                url: "banner/uploadLink",
+                data: {
+                    bannerId:$("#txt2_bannerId").val(),
+                    link:$("#txt_link").val()
+                },
+                method:"post",
+                dataType:"json",
+                success: function (d) {
+                    $("#btn_submit2").prop("disabled",false);
+                    if (d == 1) {
+                        toastr.warning("系统开小差啦,请联系管理员");
+                    } else {
+                        var id = $("#txt2_bannerId").val();
+                        $("#link"+id).text($("#txt_link").val());
+                        $('#myModal2').modal('hide');
+                        toastr.success("链接更改成功");
+                    }
+                },
+                error: function (json) {
+                    toastr.warning("网络繁忙,请稍后再试");
+                }
+            });
+        }
+    }
     function uploadBanner(){
         if ($("#txt_pic").val() == null || $("#txt_pic").val().trim() == "") {
             toastr.warning("请上传轮播图");

@@ -69,4 +69,9 @@ public class BasicController {
     public String showBanner(){
         return "banner";
     }
+
+    @RequestMapping("/showPopup")
+    public String showPopup(){
+        return "popup";
+    }
 }

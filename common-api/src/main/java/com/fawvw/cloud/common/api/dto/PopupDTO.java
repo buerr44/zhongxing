@@ -4,11 +4,11 @@ import lombok.Data;
 
 /**
  * @author HuangGang
- * @create 2021-03-31 18:50
+ * @create 2021-04-26 14:21
  **/
 @Data
-public class BannerDTO extends BaseDTO{
-    private Long bannerId;
+public class PopupDTO extends BaseDTO{
+    private Long popupId;
+    private String url;
     private String pic;
-    private String link;
 }
